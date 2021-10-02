@@ -24,7 +24,7 @@ BEGIN {
     split( \
         "exit quot lit call bind find " \
         "here ,  . .s cr " \
-        "+ -"\
+        "+ - "\
         "dup over drop nip >r r> trap", T, " ")
     for (i in T) Prim[T[i]] = 1
     delete T
