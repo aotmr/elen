@@ -1,11 +1,4 @@
 \
-\ Constants
-\
-
-:true 1 ;
-:false 0 ;
-
-\
 \ Math
 \
 
@@ -55,6 +48,18 @@
 :bi* [ dip ] dip call ;
 :bi@ dup bi* ;
 :tri swap >r [ sip ] dip sip r> call swap ;
+
+\
+\ Variables
+\
+
+\ Binds a name to a function that pushes the given value to the stack
+\
+\ ( value 'name -- )
+:constant here &lit , rot , &exit , swap bind ;
+
+0 'false constant
+1 'true constant
 
 \
 \ Control flow

@@ -13,11 +13,13 @@ if this becomes an issue.
 
 ## Design
 
-## Primitives
+### Primitives
 
 Elen is a token-threaded interpreter.
-Primitives are encoded as strings,
-and function calls as integers.
+Primitive words are encoded as strings,
+and secondary words,
+or words defined in terms of other primitives and secondaries,
+are encoded as their code address.
 Not all strings represent executable primitives;
 the interpreter will panic if it tries to execute these.
 This table of primitives is currently incomplete
@@ -87,13 +89,24 @@ Elen has conditional control flow with a single primitive: `?exit`.
 With this primitive and the power of quotations,
 we can derive a full set of conditional combinators.
 
+### Code Generation
+
+The secondary `constant` is a prime example of extending the interpreter
+through dynamic compilation.
+Given a name and a value,
+`constant` compiles the value as a literal,
+compiles an `exit` instruction,
+and binds the address of this code to the name.
+Since constants are functions,
+we can select even between them with combinators.
+
 ## Future Plans
 
 - [ ] **Machine code backend**
 - [ ] **Self hosting**
 - [ ] Constants, variables
 - [ ] String operations
-- [ ] Control flow
+- [ ] **Control flow** - secondary words for selection and iteration
 - [ ] Finish primitives
 - [ ] Flesh out core words
 - [ ] Cons cell heap
