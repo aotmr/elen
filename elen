@@ -1,0 +1,2 @@
+#!/usr/bin/sh
+awk -f elen.awk -d core.f

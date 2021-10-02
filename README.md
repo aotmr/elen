@@ -1,1 +1,1 @@
-# evef - Forth-Inspired Metaenvironment
+# elen - Forth-Inspired Meta Environment

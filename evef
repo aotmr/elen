@@ -1,2 +1,0 @@
-#!/usr/bin/sh
-awk -f evef.awk -d core.f
