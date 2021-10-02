@@ -39,6 +39,9 @@ and it will be changing often in the current stages of the project.
 | | `cr ` | ( ) | print a carriage return
 | arithmetic, logic | `+` | ( a b -- a+b ) | add the top two elements of the stack
 | | `-` | ( a b -- a-b ) | subtract the top two elements of the stack
+| | `*` | ( a b -- a\*b ) | multiply the top two elements of the stack
+| | `/mod` | ( a b -- a/b a%b ) | divide the top two stack elements, giving the quotient and remainder
+| | `neg` | ( a -- -a ) | negate the top item of the stack
 | | `2/` | ( a -- a/2 ) | divide the top of stack element by two
 | | `0=` | ( a -- flag ) | test if top of stack is equal to zero
 | | `0<` | ( a -- flag ) | test if top of stakc is less than zero
@@ -86,6 +89,8 @@ we can derive a full set of conditional combinators.
 
 ## Future Plans
 
+- [ ] **Machine code backend**
+- [ ] **Self hosting**
 - [ ] Constants, variables
 - [ ] String operations
 - [ ] Control flow

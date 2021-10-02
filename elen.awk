@@ -1,6 +1,6 @@
 #!/usr/bin/awk -f
 
-function panic(msg) { print "panic: " msg; exit 1 }
+function panic(msg) { print "panic: " FILENAME ": " msg; exit 1 }
 function trace(msg) {}#{ print "trace: " msg }
 function error(msg) { print "error: " msg }
 
@@ -35,7 +35,7 @@ BEGIN {
     split( \
         "exit ?exit call goto quot lit bind find " \
         "here ,  . .s cr " \
-        "+ - 0= 0< and or "\
+        "+ - * /mod neg 2/ 0= 0< and or "\
         "dup over drop nip "\
         ">r r> r@ >a a> a@+ a!+", T, " ")
     for (i in T) Prim[T[i]] = 1
@@ -63,6 +63,15 @@ function doFind(  key) {
     key = Dstk[sp]
     Dstk[sp] = Dict[key]
     Dstk[++sp] = key in Dict
+}
+
+function doDivMod(  a, b, q, r) {
+    a = Dstk[sp - 1]
+    b = Dstk[sp]
+    q = int(a / b)
+    r = int(a % b)
+    Dstk[sp - 1] = q
+    Dstk[sp] = r
 }
 
 function execute(xt,  i, rp0) {
@@ -98,6 +107,9 @@ function execute(xt,  i, rp0) {
         # arithmetic, logic
         else if (xt == "+") { Dstk[sp - 1] += Dstk[sp]; sp-- }
         else if (xt == "-") { Dstk[sp - 1] -= Dstk[sp]; sp-- }
+        else if (xt == "*") { Dstk[sp - 1] *= Dstk[sp]; sp-- }
+        else if (xt == "/mod") doDivMod()
+        else if (xt == "neg") Dstk[sp - 1] *= -1
         else if (xt == "2/") Dstk[sp] = int(Dstk[sp] / 2)
         else if (xt == "0=") Dstk[sp] = !Dstk[sp]
         else if (xt == "0<") Dstk[sp] = Dstk[sp] < 0
