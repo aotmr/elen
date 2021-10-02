@@ -1,2 +1,2 @@
 #!/usr/bin/sh
-awk -f elen.awk -d core.f cell.f -
+awk -f elen.awk -d core.f cons.f -
