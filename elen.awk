@@ -24,6 +24,9 @@ BEGIN {
     delete Dict[0] # dictionary
     delete Name[0] # location names
 
+    count_prim = 0 # count primitives executed
+    count_nest = 0 # count secondary nests
+
     state = 0 # interpreter nest level
     here = 1000 # current position in memory
     aa = 0 # address register
@@ -84,14 +87,16 @@ function execute(xt,  i, rp0) {
     rp0 = rp;
     while (1) {
         while (xt == +xt) {
-            Rstk[++rp] = ip;
-            ip = xt;
-            debugState(xt);
+            Rstk[++rp] = ip
+            ip = xt
+            debugState(xt)
+            ++count_nest
 
-            if (!ip) panic("out of bounds execution at " ip);
-            xt = Mem[ip++];
+            if (!ip) panic("out of bounds execution at " ip)
+            xt = Mem[ip++]
         }
-        debugState(xt);
+        debugState(xt)
+        ++count_prim
         # control flow
         if (xt == "exit") ip = Rstk[rp--]
         else if (xt == "?exit") { if (Dstk[sp--]) ip = Rstk[rp--] }
@@ -223,4 +228,7 @@ function compileOrExec(x) {
 
 END {
     for (i in Mem) printf("%04d | %s\n", i, Mem[i])
+    print "STATISTICS"
+    printf("%d\t primitives executed\n", count_prim)
+    printf("%d\t secondaries nested\n", count_nest)
 }
