@@ -22,7 +22,7 @@ BEGIN {
 
     # build set of primitives
     split( \
-        "exit quot lit call bind find " \
+        "exit ?exit quot lit call bind find " \
         "here ,  . .s cr " \
         "+ - "\
         "dup over drop nip >r r> trap", T, " ")
@@ -67,6 +67,7 @@ function execute(xt,  i, rp0) {
         trace("EXEC " xt)
         # control flow
         if (xt == "exit") ip = Rstk[rp--]
+        else if (xt == "?exit") { if (Dstk[sp--]) ip = Rstk[rp--] }
         else if (xt == "call") execute(Dstk[sp--])
         # literals
         else if (xt == "lit") Dstk[++sp] = Mem[ip++]
@@ -79,7 +80,7 @@ function execute(xt,  i, rp0) {
         else if (xt == "here") Dstk[++sp] = here
         # input, output
         else if (xt == ".") printf("%s ", Dstk[sp--])
-        else if (xt == ".s") for (i = 1; i <= sp; ++i) printf("%s ", Dstk[i])
+        else if (xt == ".s") { for (i = 1; i <= sp; ++i) printf("%s ", Dstk[i]) }
         else if (xt == "cr") print ""
         # arithmetic
         else if (xt == "+") { Dstk[sp - 1] += Dstk[sp]; sp-- }
@@ -99,6 +100,13 @@ function execute(xt,  i, rp0) {
 }
 
 # Outer Interpreter
+
+function interpAmper(word,  addr) {
+    if (word in Dict) addr = Dict[word]
+    else if (word in Prim) addr = litOrPush(word)
+    else addr = 0
+    litOrPush(addr)
+}
 
 function interpColon(word) {
     if (state > 0) panic("cannot nest colon definitions")
@@ -155,6 +163,7 @@ function compileOrExec(x) {
         word = $i
         if (word == "\\") break
         else if (word ~ /^'/) { gsub("_", " ", word); litOrPush(substr(word, 2)) }
+        else if (word ~ /^&/) interpAmper(substr(word, 2))
         else if (word ~ /^:/) interpColon(substr(word, 2))
         else if (word == ";") interpScolon()
         else if (word == "[") interpLbrack()

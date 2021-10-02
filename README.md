@@ -11,6 +11,14 @@ This indeed means Elen is an interpreter running in an interpreted language.
 Future versions of the interpreter may be written in a compiled language
 if this becomes an issue.
 
+## Design
+
+### Control flow
+
+Elen has conditional control flow with a single primitive: `?exit`.
+With this primitive and the power of quotations,
+we can derive a full set of conditional combinators.
+
 ## Future Plans
 
 - [ ] Constants, variables
