@@ -69,22 +69,22 @@
 
 \ Calls false or true execution token depending on the flag
 \
-\ ( false true flag -- )
+\ ( flag false true -- )
 :choose  rot ?swap nip call ;
 
 \ Like choose, but does a goto instead of a call
 \
-\ ( false true flag -- )
+\ ( flag false true -- )
 :whereto rot ?swap nip goto ;
 
 \ Call the token if the flag is true
 \
-\ ( token flag -- )
+\ ( flag token -- )
 :if  [ ] swap choose ;
 
 \ Opposite of -if
 \
-\ ( token flag -- )
+\ ( flag token -- )
 :-if [ ] choose ;
 
 \ Decorator to execute the rest of a function n times. The top item of the
