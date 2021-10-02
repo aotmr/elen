@@ -5,9 +5,9 @@ function trace(msg) {}#{ print "trace: " msg }
 function error(msg) { print "error: " msg }
 
 function debugState(xt,  i) {
-    return;
+    # return;
     print ""
-    printf("XT: %-12s | IP:%4d | Dstk[ ", xt, ip)
+    printf("XT: %-12s | IP:%4d | AA:%4d | Dstk[ ", xt, ip, aa)
     for(i = 1; i <= sp; ++i) printf("%s ", Dstk[i])
     printf(" ]    [  ");
     for(i = rp; i >= 1; --i) printf("%s ", Rstk[i])
@@ -26,6 +26,7 @@ BEGIN {
 
     state = 0 # interpreter nest level
     here = 1000 # current position in memory
+    aa = 0 # address register
     ip = 0 # interpreter pointer
     rp = 0 # return stack pointer
     sp = 0 # data stack pointer
@@ -35,7 +36,8 @@ BEGIN {
         "exit ?exit call goto quot lit bind find " \
         "here ,  . .s cr " \
         "+ - 0= 0< "\
-        "dup over drop nip >r r> r@ trap", T, " ")
+        "dup over drop nip "\
+        ">r r> r@ >a a> a@+ a!+", T, " ")
     for (i in T) Prim[T[i]] = 1
     delete T
 }
@@ -106,6 +108,11 @@ function execute(xt,  i, rp0) {
         else if (xt == ">r") Rstk[++rp] = Dstk[sp--]
         else if (xt == "r>") Dstk[++sp] = Rstk[rp--]
         else if (xt == "r@") Dstk[++sp] = Rstk[rp]
+        # memory access
+        else if (xt == ">a") aa = +Dstk[sp--]
+        else if (xt == "a>") Dstk[++sp] = aa
+        else if (xt == "a@+") Dstk[++sp] = Mem[aa++]
+        else if (xt == "a!+") Mem[aa++] = Dstk[sp--]
         else panic("cannot execute primitive " xt);
 
         if (rp > rp0) xt = Mem[ip++]
@@ -188,30 +195,4 @@ function compileOrExec(x) {
         else panic("cannot interpret word " word);
     }
     if (state == 0 && FILENAME == "-") print "ok. "
-}
-
-END {
-    # print ""
-    # print "KEY\tVAL"
-    # for (i in Dict) printf("%s\t%s\n", i, Dict[i])
-    # print ""
-    # n = 0
-
-    # printf("NAME\t ADDR | MEMORY  ..." )
-    # for (i in Mem) {
-    #     if (i in Name) { 
-    #         printf("\n%s\t% 5d | ", Name[i], i)
-    #         n = 1
-    #     } else if (n > 8) {
-    #         printf("...\n\t% 5d | ", i)
-    #         n = 0
-    #     }
-    #     if (Mem[i] in Name) {
-    #         printf("#%s\t", Name[Mem[i]])
-    #     } else {
-    #         printf("'%s\t", Mem[i])
-    #     }
-    #     ++n
-    # }
-    # print ""
 }

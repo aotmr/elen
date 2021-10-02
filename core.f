@@ -11,6 +11,10 @@
 
 :0> 0< 0= ;
 
+:= - 0= ;
+:< - 0< ;
+:> - 0> ;
+
 \
 \ Stack operators
 \
@@ -18,6 +22,18 @@
 :2drop  drop drop ;
 :swap over >r nip r> ;
 :rot >r swap r> swap ;
+
+\
+\ Memory access
+\
+
+:@ >a a@+ ;
+:! >a a!+ ;
+
+:2@ >a a@+ a@+ ;
+:2! >a a!+ a!+ ;
+
+:2, over , nip , ;
 
 \
 \ Combinators
