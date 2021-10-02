@@ -35,7 +35,7 @@ BEGIN {
     split( \
         "exit ?exit call goto quot lit bind find " \
         "here ,  . .s cr " \
-        "+ - 0= 0< "\
+        "+ - 0= 0< and or "\
         "dup over drop nip "\
         ">r r> r@ >a a> a@+ a!+", T, " ")
     for (i in T) Prim[T[i]] = 1
@@ -95,11 +95,14 @@ function execute(xt,  i, rp0) {
         else if (xt == ".") printf("%s ", Dstk[sp--])
         else if (xt == ".s") { for (i = 1; i <= sp; ++i) printf("%s ", Dstk[i]) }
         else if (xt == "cr") print ""
-        # arithmetic
+        # arithmetic, logic
         else if (xt == "+") { Dstk[sp - 1] += Dstk[sp]; sp-- }
         else if (xt == "-") { Dstk[sp - 1] -= Dstk[sp]; sp-- }
-        else if (xt == "0=") Dstk[sp] = !!Dstk[sp]
+        else if (xt == "2/") Dstk[sp] = int(Dstk[sp] / 2)
+        else if (xt == "0=") Dstk[sp] = !Dstk[sp]
         else if (xt == "0<") Dstk[sp] = Dstk[sp] < 0
+        else if (xt == "and") { Dstk[sp - 1] = and(Dstk[sp - 1], Dstk[sp]); sp-- }
+        else if (xt == "or") { Dstk[sp - 1] = or(Dstk[sp - 1], Dstk[sp]); sp-- }
         # stack
         else if (xt == "dup") { ++sp; Dstk[sp] = Dstk[sp - 1] }
         else if (xt == "over") { ++sp; Dstk[sp] = Dstk[sp - 2] }
