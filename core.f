@@ -13,7 +13,6 @@
 :/ /mod drop ;
 :mod /mod nip ;
 
-:= - 0= ;
 :< - 0< ;
 :> - 0> ;
 
@@ -47,6 +46,10 @@
 :bi [ sip ] dip call ;
 :bi* [ dip ] dip call ;
 :bi@ dup bi* ;
+
+\ Call the quotes f, g, and h with x, leaving the result of each on the stack
+\
+\ ( x f g h -- )
 :tri swap >r [ sip ] dip sip r> call swap ;
 
 \
@@ -92,3 +95,10 @@
 \
 \ ( n -- n' )
 :times>  1 -  r@  over [ drop ] [ r> drop call &times> goto ] whereto ;
+
+\
+\ Types
+\
+
+:number? type 'number = ;
+:string? type 'string = ;

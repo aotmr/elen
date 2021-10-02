@@ -1,15 +1,17 @@
-\ for our pointer tags to work, all cons cells
-\ must be allocated aligned to even addresses
-:cons-align here 1 and 0= ?exit 0 , ;
+\
+\ Cons Cell Wordset
+\
 
-:cons cons-align here >r 2, r> ;
+:2align here 1 and 0= ?exit 0 , ;
+
+:cons  2align  here  &2, dip ;
 
 :car @ ;
 :cdr 1 + @ ;
 :carcdr 2@ ;
 
 :null? 0= ;
-:atom? [ 1 and 0<> ] &null? bi or ;
+:atom? &string? [ 1 and 0<> ] &null? tri or or ;
 :pair? atom? 0= ;
 
 :>atom 2* 1+ ;
