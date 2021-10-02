@@ -14,17 +14,17 @@ BEGIN {
     delete Dict[0] # dictionary
     delete Name[0] # location names
 
-    nest = 0 # interpreter nest level
+    state = 0 # interpreter nest level
     here = 1000 # current position in memory
-    ip = 0
-    rp = 0
-    sp = 0
+    ip = 0 # interpreter pointer
+    rp = 0 # return stack pointer
+    sp = 0 # data stack pointer
 
     # build set of primitives
     split( \
         "exit quot lit call bind find " \
         "here ,  . .s cr " \
-        "+ "\
+        "+ -"\
         "dup over drop nip >r r> trap", T, " ")
     for (i in T) Prim[T[i]] = 1
     delete T
@@ -101,16 +101,16 @@ function execute(xt,  i, rp0) {
 # Outer Interpreter
 
 function interpColon(word) {
-    if (nest > 0) panic("cannot nest colon definitions")
-    ++nest
+    if (state > 0) panic("cannot nest colon definitions")
+    ++state
 
     Dict[word] = here
     Name[here] = word
 }
 
 function interpScolon() {
-    --nest
-    if (nest < 0) panic("cannot nest below ground")
+    --state
+    if (state < 0) panic("cannot nest below ground")
 
     Mem[here++] = "exit"
 }
@@ -120,21 +120,21 @@ function interpLbrack() {
     Dstk[++sp] = here
     Mem[here++] = -1
 
-    ++nest
+    ++state
 }
 
 function interpRbrack(  quot) {
-    --nest
-    if (nest < 0) panic("cannot nest below ground")
+    --state
+    if (state < 0) panic("cannot nest below ground")
 
     quot = Dstk[sp--]
     Mem[quot] = here - quot # patch up quote length
     Mem[here++] = "exit"
-    if (nest == 0) Dstk[++sp] = quot + 1
+    if (state == 0) Dstk[++sp] = quot + 1
 }
 
 function litOrPush(x) {
-    if (nest > 0) {
+    if (state > 0) {
         Mem[here++] = "lit";
         Mem[here++] = x;
     } else {
@@ -143,7 +143,7 @@ function litOrPush(x) {
 }
 
 function compileOrExec(x) {
-    if (nest > 0) {
+    if (state > 0) {
         Mem[here++] = x;
     } else {
         execute(x);
@@ -164,7 +164,7 @@ function compileOrExec(x) {
         else if (word == +word) litOrPush(+word)
         else panic("cannot interpret word " word);
     }
-    if (nest == 0 && FILENAME == "-") print "ok. "
+    if (state == 0 && FILENAME == "-") print "ok. "
 }
 
 END {
