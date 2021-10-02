@@ -34,6 +34,8 @@ and it will be changing often in the current stages of the project.
 | | `quot` #len | ( -- a ) | push the quotation address and skip over it
 | dictionary | `bind` | ( x name -- ) | assign value to name in dictionary
 | | `find` | ( name -- val flag ) | find value for name in dictionary, flag indicates success
+| | `type` | ( val -- type ) | replace the top stack value with its type: `'number` or `'string` |
+| | `=` | ( a b -- a==b ) | test whether the top two items on the stack are equal
 | | `,` | ( x --  ) | write a value to into dictionary space
 | | `here` | ( -- addr ) | push the dictionary space pointer
 | input, output | `.` | ( x -- ) | print the top stack value

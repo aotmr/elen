@@ -5,7 +5,7 @@ function trace(msg) {}#{ print "trace: " msg }
 function error(msg) { print "error: " msg }
 
 function debugState(xt,  i) {
-    # return;
+    return;
     print ""
     printf("XT: %-12s | IP:%4d | AA:%4d | Dstk[ ", xt, ip, aa)
     for(i = 1; i <= sp; ++i) printf("%s ", Dstk[i])
@@ -34,6 +34,7 @@ BEGIN {
     # build set of primitives
     split( \
         "exit ?exit call goto quot lit bind find " \
+        "type = " \
         "here ,  . .s cr " \
         "+ - * /mod neg 2/ 0= 0< and or "\
         "dup over drop nip "\
@@ -63,6 +64,11 @@ function doFind(  key) {
     key = Dstk[sp]
     Dstk[sp] = Dict[key]
     Dstk[++sp] = key in Dict
+}
+
+function doType(  val) {
+    val = Dstk[sp]
+    Dstk[sp] = (val == +val) ? "number" : "string"
 }
 
 function doDivMod(  a, b, q, r) {
@@ -104,6 +110,9 @@ function execute(xt,  i, rp0) {
         else if (xt == ".") printf("%s ", Dstk[sp--])
         else if (xt == ".s") { for (i = 1; i <= sp; ++i) printf("%s ", Dstk[i]) }
         else if (xt == "cr") print ""
+        # type, equality
+        else if (xt == "type") doType()
+        else if (xt == "=") { Dstk[sp - 1] = (Dstk[sp - 1] == Dstk[sp]); sp-- }
         # arithmetic, logic
         else if (xt == "+") { Dstk[sp - 1] += Dstk[sp]; sp-- }
         else if (xt == "-") { Dstk[sp - 1] -= Dstk[sp]; sp-- }
@@ -139,7 +148,7 @@ function execute(xt,  i, rp0) {
 
 function interpAmper(word,  addr) {
     if (word in Dict) addr = Dict[word]
-    else if (word in Prim) addr = litOrPush(word)
+    else if (word in Prim) addr = word
     else addr = 0
     litOrPush(addr)
 }
@@ -210,4 +219,8 @@ function compileOrExec(x) {
         else panic("cannot interpret word " word);
     }
     if (state == 0 && FILENAME == "-") print "ok. "
+}
+
+END {
+    for (i in Mem) printf("%04d | %s\n", i, Mem[i])
 }
