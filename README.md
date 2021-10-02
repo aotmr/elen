@@ -13,6 +13,9 @@ if this becomes an issue.
 
 ## Future Plans
 
+- [ ] Constants, variables
+- [ ] String operations
+- [ ] Control flow
 - [ ] Finish primitives
 - [ ] Flesh out core words
 - [ ] Cons cell heap
