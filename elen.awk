@@ -5,11 +5,13 @@ function trace(msg) {}#{ print "trace: " msg }
 function error(msg) { print "error: " msg }
 
 function debugState(xt,  i) {
-    printf("XT: %-12s | IP:% 4d | Dstk[ ", xt, ip)
+    return;
+    print ""
+    printf("XT: %-12s | IP:%4d | Dstk[ ", xt, ip)
     for(i = 1; i <= sp; ++i) printf("%s ", Dstk[i])
-    printf(" ] Rstk[  ");
-    for(i = 1; i <= rp; ++i) printf("%s ", Rstk[i])
-    print "]"
+    printf(" ]    [  ");
+    for(i = rp; i >= 1; --i) printf("%s ", Rstk[i])
+    printf("]Rstk | ")
 }
 
 # Interpreter Setup
@@ -33,7 +35,7 @@ BEGIN {
         "exit ?exit call goto quot lit bind find " \
         "here ,  . .s cr " \
         "+ - 0= 0< "\
-        "dup over drop nip >r r> trap", T, " ")
+        "dup over drop nip >r r> r@ trap", T, " ")
     for (i in T) Prim[T[i]] = 1
     delete T
 }
@@ -103,6 +105,7 @@ function execute(xt,  i, rp0) {
         else if (xt == "nip") { Dstk[sp - 1] = Dstk[sp]; sp-- }
         else if (xt == ">r") Rstk[++rp] = Dstk[sp--]
         else if (xt == "r>") Dstk[++sp] = Rstk[rp--]
+        else if (xt == "r@") Dstk[++sp] = Rstk[rp]
         else panic("cannot execute primitive " xt);
 
         if (rp > rp0) xt = Mem[ip++]
