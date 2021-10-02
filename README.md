@@ -38,11 +38,11 @@ and it will be changing often in the current stages of the project.
 | `0=` | ( a -- flag ) | test if top of stack is equal to zero
 | `0<` | ( a -- flag ) | test if top of stakc is less than zero
 | `and` | ( a b -- a&b ) | bitwise and of top two stack elements
-| `or` | ( a b -- a|b ) | bitwise or of top two stack elements
+| `or` | ( a b -- a\|b ) | bitwise or of top two stack elements
 | `dup` | ( a -- a a ) | duplicate top stack item
 | `over` | ( a b -- a b a ) | copy second stack item to top
-| `drop` | ( a -- ) discard top stack item
-| `nip` | ( a b -- b ) discard second stack item
+| `drop` | ( a -- ) | discard top stack item
+| `nip` | ( a b -- b ) | discard second stack item
 | `>r` | ( x -- R:x ) | transfer value from return to data stack
 | `r>` | ( R:x -- x ) | transfer values from data to return stack
 | `r@` | ( R:x -- R:x x ) | copy top item from return to data stack
