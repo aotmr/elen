@@ -1,4 +1,10 @@
+\ Stack operators
+
 :swap over >r nip r> ;
+:rot >r swap r> swap ;
+
+\ Combinators
+
 :dip swap >r call r> ;
 :sip over >r call r> ;
 :bi [ sip ] dip call ;
