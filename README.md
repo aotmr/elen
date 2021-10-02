@@ -15,6 +15,11 @@ if this becomes an issue.
 
 ## Primitives
 
+Elen is a token-threaded interpreter.
+Primitives are encoded as strings,
+and function calls as integers.
+Not all strings represent executable primitives;
+the interpreter will panic if it tries to execute these.
 This table of primitives is currently incomplete
 and it will be changing often in the current stages of the project.
 
