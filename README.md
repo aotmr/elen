@@ -15,6 +15,27 @@ if this becomes an issue.
 
 ### Control flow
 
+`goto` provides for an explicit tail call mechanism.
+
+Return stack manipulation gives us a sort of decorator mechanism
+where we can use the tail end of a word
+(everything to the right until the next `exit`)
+as a quotation.
+`?exit` is perhaps the most basic of these:
+it either executes the rest of whatever word it is in,
+or it doesn't.
+
+Here is an example of the `times>` decorator.
+It repeats the tail of a word
+as many times as the top stack item.
+Here are both the colon-definition and bind-definiton forms as well.
+```
+:say times> dup . 'more_times . cr ;
+5 say
+
+5 [ times> dup . 'more_times . cr ] call
+```
+
 Elen has conditional control flow with a single primitive: `?exit`.
 With this primitive and the power of quotations,
 we can derive a full set of conditional combinators.

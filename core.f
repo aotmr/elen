@@ -6,6 +6,12 @@
 :false 0 ;
 
 \
+\ Math
+\
+
+:0> 0< 0= ;
+
+\
 \ Stack operators
 \
 
@@ -31,7 +37,28 @@
 
 :?swap  ?exit swap ;
 
+\ Calls false or true execution token depending on the flag
+\
+\ ( false true flag -- )
 :choose  rot ?swap nip call ;
 
+\ Like choose, but does a goto instead of a call
+\
+\ ( false true flag -- )
+:whereto rot ?swap nip goto ;
+
+\ Call the token if the flag is true
+\
+\ ( token flag -- )
 :if  [ ] swap choose ;
-:-if  [ ] choose ;
+
+\ Opposite of -if
+\
+\ ( token flag -- )
+:-if [ ] choose ;
+
+\ Decorator to execute the rest of a function n times. The top item of the
+\ stack counts to zero
+\
+\ ( n -- n' )
+:times>  1 -  r@  over [ drop ] [ r> drop call &times> goto ] whereto ;
