@@ -18,38 +18,38 @@ if this becomes an issue.
 This table of primitives is currently incomplete
 and it will be changing often in the current stages of the project.
 
-| Name | Arity | Description
-|-|-|-
-| `exit` | ( -- ) | return to the calling definition
-| `?exit` | ( flag -- ) | return to the calling definition if flag is true
-| `goto` | ( addr -- ) | tail call the destination on the stack
-| `lit` #value | ( -- val ) | push a literal to the data stack
-| `quot` #len | ( -- a ) | push the quotation address and skip over it
-| `bind` | ( x name -- ) | assign value to name in dictionary
-| `find` | ( name -- val flag ) | find value for name in dictionary, flag indicates success
-| `,` | ( x --  ) | write a value to into dictionary space
-| `here` | ( -- addr ) | push the dictionary space pointer
-| `.` | ( x -- ) | print the top stack value
-| `.s` | ( -- ) | print the full data stack
-| `cr ` | ( ) | print a carriage return
-| `+` | ( a b -- a+b ) | add the top two elements of the stack
-| `-` | ( a b -- a-b ) | subtract the top two elements of the stack
-| `2/` | ( a -- a/2 ) | divide the top of stack element by two
-| `0=` | ( a -- flag ) | test if top of stack is equal to zero
-| `0<` | ( a -- flag ) | test if top of stakc is less than zero
-| `and` | ( a b -- a&b ) | bitwise and of top two stack elements
-| `or` | ( a b -- a\|b ) | bitwise or of top two stack elements
-| `dup` | ( a -- a a ) | duplicate top stack item
-| `over` | ( a b -- a b a ) | copy second stack item to top
-| `drop` | ( a -- ) | discard top stack item
-| `nip` | ( a b -- b ) | discard second stack item
-| `>r` | ( x -- R:x ) | transfer value from return to data stack
-| `r>` | ( R:x -- x ) | transfer values from data to return stack
-| `r@` | ( R:x -- R:x x ) | copy top item from return to data stack
-| `>a` | ( addr -- ) | transfer top of stack to A
-| `a>` | ( -- addr ) | push value of A to stack
-| `a@+` | ( -- x ) | read memory at A and increment A
-| `a!+` | ( x -- ) | write to memory at A and increment A
+| Category | Name | Arity | Description
+|-|-|-|-
+| control flow | `exit` | ( -- ) | return to the calling definition
+| | `?exit` | ( flag -- ) | return to the calling definition if flag is true
+| | `goto` | ( addr -- ) | tail call the destination on the stack
+| literal | `lit` #value | ( -- val ) | push a literal to the data stack
+| | `quot` #len | ( -- a ) | push the quotation address and skip over it
+| dictionary | `bind` | ( x name -- ) | assign value to name in dictionary
+| | `find` | ( name -- val flag ) | find value for name in dictionary, flag indicates success
+| | `,` | ( x --  ) | write a value to into dictionary space
+| | `here` | ( -- addr ) | push the dictionary space pointer
+| input, output | `.` | ( x -- ) | print the top stack value
+| | `.s` | ( -- ) | print the full data stack
+| | `cr ` | ( ) | print a carriage return
+| arithmetic, logic | `+` | ( a b -- a+b ) | add the top two elements of the stack
+| | `-` | ( a b -- a-b ) | subtract the top two elements of the stack
+| | `2/` | ( a -- a/2 ) | divide the top of stack element by two
+| | `0=` | ( a -- flag ) | test if top of stack is equal to zero
+| | `0<` | ( a -- flag ) | test if top of stakc is less than zero
+| | `and` | ( a b -- a&b ) | bitwise and of top two stack elements
+| | `or` | ( a b -- a\|b ) | bitwise or of top two stack elements
+| stack manipulation | `dup` | ( a -- a a ) | duplicate top stack item
+| | `over` | ( a b -- a b a ) | copy second stack item to top
+| | `drop` | ( a -- ) | discard top stack item
+| | `nip` | ( a b -- b ) | discard second stack item
+| | `>r` | ( x -- R:x ) | transfer value from return to data stack
+| | `r>` | ( R:x -- x ) | transfer values from data to return stack
+| | `r@` | ( R:x -- R:x x ) | copy top item from return to data stack
+| memory access | `>a` | ( addr -- ) | transfer top of stack to A
+| | `a>` | ( -- addr ) | push value of A to stack
+| | `a@+` | ( -- x ) | read memory at A and increment A
+| | `a!+` | ( x -- ) | write to memory at A and increment A
 
 
 ### Control flow
