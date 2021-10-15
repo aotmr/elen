@@ -1,5 +1,11 @@
 # Elen - Forth-Inspired Meta Language
 
+## Successor
+
+[Lith](https://github.com/aotmr/Lith) has succeeded Elen as my current meta environment project.
+If that goes well,
+you are unlikely to see further changes to this repository.
+
 ## Introduction
 
 Elen is a stack programming language intended for researching
